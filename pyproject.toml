@@ -1,0 +1,42 @@
+[tool.poetry]
+name = "assignment"
+version = "1.0.0"
+description = "Deep learning for transcription factor binding site discovery (1D CNN)"
+authors = ["michael brent <mbrent@wustl.edu>"]
+license = "LICENSE"
+readme = "README.md"
+package-mode = true
+packages = [{include = "assignment"}]
+
+[tool.poetry.dependencies]
+# TensorFlow 2.14 supports Python 3.9 - 3.11 only, and Poetry requires every
+# dependency to cover the whole declared range, so the template's "^3.9" is
+# narrowed here.
+python = ">=3.9,<3.12"
+numpy = "^1.25.2"
+pandas = "^2.0.0"
+scikit-learn = "^1.3.0"
+matplotlib = "^3.7.0"
+requests = "^2.31.0"
+# TensorFlow 2.14 for every platform students might use. On ARM Linux (Docker
+# on an Apple Silicon Mac) the "tensorflow" wheel is only a stub that points at
+# "tensorflow-cpu-aws", and Poetry does not follow that pointer, so the ARM
+# build is named explicitly with a platform marker. x86_64 Linux (Codespaces),
+# macOS and Windows get the normal wheel. No GPU is needed (the model has
+# about 6,000 parameters).
+tensorflow = { version = "2.14.0", markers = "platform_system != 'Linux' or platform_machine != 'aarch64'" }
+tensorflow-cpu-aws = { version = "2.14.0", markers = "platform_system == 'Linux' and platform_machine == 'aarch64'" }
+# This lab does not use cse587Autils, but the lines are kept for consistency with
+# the other labs. To use the github version of utils, uncomment the second line
+# below; to use a local copy, uncomment the first. Then run "poetry lock".
+# cse587autils = { path = "/workspaces/cse587Autils", develop = true }
+# cse587autils = { git = "https://github.com/CSE587A-permanent-org/cse587Autils.git" }
+
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.25.0"
+autopep8 = "^2.0.2"
+flake8 = "^6.1.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
